@@ -1,0 +1,42 @@
+<div class="row">
+    <div class="col-md-9">
+        <h2>{{#str}}enrolled_students, report_esmp{{/str}} {{#cohort}}.:. <small>{{#str}}students_of_cohort, report_esmp{{/str}}: <b>{{{name}}}</b></small>{{/cohort}}</h2>
+    </div>
+    <div class="col-md-3" style="text-align: right">
+        <a href="{{config.wwwroot}}/report/esmp/export/csv/students.php?course={{{courseid}}}{{#cohort}}&cohort={{{id}}}{{/cohort}}" class="btn btn-success"><i class="fa fa-download"></i> {{#str}}export_spreadsheet, report_esmp{{/str}}</a>
+    </div>
+</div>
+
+
+<div class="row form-filter">
+    <form class="form" method="get">
+        <input type="hidden" name="course" value="{{courseid}}">
+        <div class="col-md-4">
+            <select class="form-control" name="cohort" id="cohort">
+                {{#cohorts}}
+                    <option value="{{{id}}}">{{{name}}}</option>
+                {{/cohorts}}
+            </select>
+        </div>
+        <div class="col-md-4">
+            <span class="input-group-btn">
+                <button class="btn btn-primary" type="submit">Filtrar</button>
+            </span>
+        </div>
+    </form>
+</div>
+
+<table class="flexible reportstudentsindex generaltable generalbox" aria-live="polite">
+    <thead>
+    <tr>
+        <th class="header c0" width="30%" scope="col">{{#str}}fullname, core{{/str}}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#students}}
+        <tr>
+            <td class="cell c0">{{{userpicture}}} {{{fullname}}}</td>
+        </tr>
+    {{/students}}
+    </tbody>
+</table>
