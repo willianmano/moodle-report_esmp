@@ -42,14 +42,12 @@ class esmplib
         $userfields = user_picture::fields('u', array('username'));
 
         $sql = "SELECT
-                    DISTINCT $userfields
+                    DISTINCT $userfields, co.name as cohort
                 FROM {user} u
                 INNER JOIN {role_assignments} ra ON ra.userid = u.id
-                INNER JOIN {context} c ON c.id = ra.contextid";
-
-        if ($cohort && isset($cohort->id)) {
-            $sql .= " INNER JOIN {cohort_members} cm ON cm.userid = u.id ";
-        }
+                INNER JOIN {context} c ON c.id = ra.contextid
+                LEFT JOIN {cohort_members} cm ON cm.userid = u.id AND (cm.cohortid = 2 OR cm.cohortid = 3)
+                LEFT JOIN {cohort} co ON co.id = cm.cohortid";
 
         $sql .= " WHERE
                     ra.contextid = :contextid
@@ -64,6 +62,31 @@ class esmplib
         }
 
         $sql .= "ORDER BY u.firstname ASC, u.lastname ASC";
+
+        $params['contextid'] = \context_course::instance($courseid)->id;
+        $params['roleid'] = 5;
+        $params['courseinstanceid'] = $courseid;
+
+        return array_values($DB->get_records_sql($sql, $params));
+    }
+
+    public static function get_course_students_count_by_cohort($courseid)
+    {
+        global $DB;
+
+        $sql = "SELECT
+                  co.name, count(*) as qtd
+                FROM {user} u
+                INNER JOIN {role_assignments} ra ON ra.userid = u.id
+                INNER JOIN {context} c ON c.id = ra.contextid
+                LEFT JOIN {cohort_members} cm ON cm.userid = u.id AND (cm.cohortid = 2 OR cm.cohortid = 3)
+                LEFT JOIN {cohort} co ON co.id = cm.cohortid
+                WHERE
+                  ra.contextid = :contextid
+                  AND ra.userid = u.id
+                  AND ra.roleid = :roleid
+                  AND c.instanceid = :courseinstanceid
+                GROUP BY co.name";
 
         $params['contextid'] = \context_course::instance($courseid)->id;
         $params['roleid'] = 5;

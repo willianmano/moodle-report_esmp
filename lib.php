@@ -35,7 +35,7 @@ defined('MOODLE_INTERNAL') || die;
 function report_esmp_extend_navigation_course($navigation, $course, $context) {
 
     if (has_capability('moodle/site:accessallgroups', $context)) {
-        $url = new moodle_url('/report/esmp/students.php', array('course' => $course->id));
+        $url = new moodle_url('/report/esmp/index.php', array('course' => $course->id));
         $node = navigation_node::create(get_string('reportpage_students', 'report_esmp'), $url, navigation_node::TYPE_SETTING,
             null, null, new pix_icon('i/report', get_string('reportpage_students', 'report_esmp')));
         $navigation->add_node($node);

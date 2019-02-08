@@ -38,6 +38,9 @@ class students_index implements renderable, templatable {
     public $cohort;
     public $cohorts;
 
+    // Cohorts usados para gerar as estatísticas.
+    protected $cohortsenabled = [2, 3];
+
     /**
      * Constructor.
      *
@@ -70,16 +73,22 @@ class students_index implements renderable, templatable {
             $outputstudents[] = [
                 'id' => $student->id,
                 'fullname' => $student->firstname . ' ' . $student->lastname,
+                'email' => $student->email,
+                'cohort' => $student->cohort,
                 'userpicture' => $output->user_picture($student, array('size' => 24, 'alttext' => false))
             ];
         }
 
-        $outputcohorts[] = ['id' => 0, 'name' => get_string('choose_cohort', 'report_esmp')];
         if (isset($this->cohorts['cohorts'])) {
             foreach ($this->cohorts['cohorts'] as $cohort) {
-                $outputcohorts[] = ['id' => $cohort->id, 'name' => $cohort->name];
+                if (in_array($cohort->id, $this->cohortsenabled)) {
+                    $outputcohorts[] = ['id' => $cohort->id, 'name' => $cohort->name];
+                }
             }
         }
+
+        array_unshift($outputcohorts, ['id' => 0, 'name' => 'Todos os inscritos']);
+        array_push($outputcohorts, ['id' => -1, 'name' => 'Público externo']);
 
         return [
             'courseid' => $this->course->id,

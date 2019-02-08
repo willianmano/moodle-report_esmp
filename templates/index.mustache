@@ -1,0 +1,36 @@
+<div class="row">
+    <div class="col-md-9">
+        <h2>Relatório dos inscritos no evento</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        {{{ piechart }}}
+    </div>
+    <div class="col-md-6">
+        <table class="flexible reportstudentsindex generaltable generalbox" aria-live="polite">
+            <thead>
+            <tr>
+                <th class="header c0" width="40%" scope="col">Cooort</th>
+                <th class="header c1" width="40%" scope="col">QTD Inscritos</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#groupedstudents}}
+            <tr>
+                <td class="cell c0">{{{name}}}</td>
+                <td class="cell c1">{{{qtd}}}</td>
+            </tr>
+            {{/groupedstudents}}
+            <tr>
+                <td class="cell text-right c0"><b>TOTAL</b></td>
+                <td class="cell c1"><b>{{{totalinscritos}}}</b></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <a href="{{config.wwwroot}}/report/esmp/students.php?course={{{ courseid }}}" class="btn btn-primary"><i class="fa fa-users"></i> Ver relação dos inscritos</a>
+    </div>
+</div>
+

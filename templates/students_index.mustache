@@ -8,20 +8,22 @@
 </div>
 
 
-<div class="row form-filter">
+<div class="form-filter">
     <form class="form" method="get">
         <input type="hidden" name="course" value="{{courseid}}">
-        <div class="col-md-4">
-            <select class="form-control" name="cohort" id="cohort">
-                {{#cohorts}}
-                    <option value="{{{id}}}">{{{name}}}</option>
-                {{/cohorts}}
-            </select>
-        </div>
-        <div class="col-md-4">
-            <span class="input-group-btn">
-                <button class="btn btn-primary" type="submit">Filtrar</button>
-            </span>
+        <div class="row">
+            <div class="col-md-3">
+                <select class="form-control" name="cohort" id="cohort">
+                    {{#cohorts}}
+                        <option value="{{{id}}}">{{{name}}}</option>
+                    {{/cohorts}}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" type="submit">Filtrar</button>
+                </span>
+            </div>
         </div>
     </form>
 </div>
@@ -29,13 +31,17 @@
 <table class="flexible reportstudentsindex generaltable generalbox" aria-live="polite">
     <thead>
     <tr>
-        <th class="header c0" width="30%" scope="col">{{#str}}fullname, core{{/str}}</th>
+        <th class="header c0" width="40%" scope="col">{{#str}}fullname, core{{/str}}</th>
+        <th class="header c1" width="40%" scope="col">Email</th>
+        <th class="header c2" width="20%" scope="col">Cohort</th>
     </tr>
     </thead>
     <tbody>
     {{#students}}
         <tr>
             <td class="cell c0">{{{userpicture}}} {{{fullname}}}</td>
+            <td class="cell c1">{{{email}}}</td>
+            <td class="cell c2">{{{cohort}}}</td>
         </tr>
     {{/students}}
     </tbody>

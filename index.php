@@ -25,18 +25,12 @@
 require_once(__DIR__ . '/../../config.php');
 
 $courseid = required_param('course', PARAM_INT);
-$cohortid = optional_param('cohort', 0, PARAM_INT);
 
 if (!$courseid) {
     print_error('invalidesmp');
 }
 
 $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
-
-$cohort = null;
-if ($cohortid) {
-    $cohort = $DB->get_record('cohort', array('id' => $cohortid), '*', MUST_EXIST);
-}
 
 require_login($course);
 
@@ -50,7 +44,7 @@ $PAGE->set_pagelayout('report');
 $PAGE->set_title(get_string('reportpage_students', 'report_esmp'));
 $PAGE->set_heading(get_string('reportpage_students', 'report_esmp'));
 
-$renderable = new \report_esmp\output\students_index($course, $cohort);
+$renderable = new \report_esmp\output\index($course);
 
 $output = $PAGE->get_renderer('report_esmp');
 
