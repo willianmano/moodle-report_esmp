@@ -34,8 +34,14 @@ if (!$courseid) {
 $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
 
 $cohort = null;
-if ($cohortid) {
+if ($cohortid && $cohortid != -1) {
     $cohort = $DB->get_record('cohort', array('id' => $cohortid), '*', MUST_EXIST);
+}
+
+if ($cohortid == -1) {
+    $cohort = new stdClass();
+    $cohort->id = -1;
+    $cohort->name = 'Público externo';
 }
 
 require_login($course);

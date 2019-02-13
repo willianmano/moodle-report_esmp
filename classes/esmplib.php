@@ -21,7 +21,7 @@ defined('MOODLE_INTERNAL') || die();
 use user_picture;
 
 /**
- * Samba report class.
+ * ESMP report class.
  *
  * @package    report_esmp
  * @copyright  2018 Willian Mano <willianmanoaraujo@gmail.com>
@@ -47,21 +47,35 @@ class esmplib
                 INNER JOIN {role_assignments} ra ON ra.userid = u.id
                 INNER JOIN {context} c ON c.id = ra.contextid
                 LEFT JOIN {cohort_members} cm ON cm.userid = u.id AND (cm.cohortid = 2 OR cm.cohortid = 3)
-                LEFT JOIN {cohort} co ON co.id = cm.cohortid";
-
-        $sql .= " WHERE
+                LEFT JOIN {cohort} co ON co.id = cm.cohortid
+                WHERE
                     ra.contextid = :contextid
                     AND ra.userid = u.id
                     AND ra.roleid = :roleid
                     AND c.instanceid = :courseinstanceid";
 
-        if ($cohort && isset($cohort->id)) {
+        if ($cohort->id == -1) {
+            $sql = "SELECT
+                    DISTINCT $userfields, ' ' as cohort
+                FROM {user} u
+                INNER JOIN {role_assignments} ra ON ra.userid = u.id
+                INNER JOIN {context} c ON c.id = ra.contextid
+                LEFT JOIN {cohort_members} cm ON cm.userid = u.id AND (cm.cohortid = 2 OR cm.cohortid = 3)
+                WHERE
+                    ra.contextid = :contextid
+                    AND ra.userid = u.id
+                    AND ra.roleid = :roleid
+                    AND c.instanceid = :courseinstanceid
+                    AND cm.id is null";
+        }
+
+        if ($cohort && isset($cohort->id) && $cohort->id != -1) {
             $sql .= " AND cm.cohortid = :cohortid";
 
             $params['cohortid'] = $cohort->id;
         }
 
-        $sql .= "ORDER BY u.firstname ASC, u.lastname ASC";
+        $sql .= " ORDER BY u.firstname ASC, u.lastname ASC";
 
         $params['contextid'] = \context_course::instance($courseid)->id;
         $params['roleid'] = 5;

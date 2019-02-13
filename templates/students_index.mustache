@@ -44,5 +44,10 @@
             <td class="cell c2">{{{cohort}}}</td>
         </tr>
     {{/students}}
+    {{^students}}
+    <tr class="table-info">
+        <td class="cell c0" colspan="3">Não existem inscritos nesta categoria.</td>
+    </tr>
+    {{/students}}
     </tbody>
 </table>
