@@ -25,7 +25,7 @@
 $string['pluginname'] = 'ESMP Reports';
 $string['export_spreadsheet'] = 'Export spreadsheet';
 $string['seedetails'] = 'See details';
-$string['reportpage_students'] = 'ESMP - Students';
+$string['reportpage_students'] = 'ESMP - Enroled users';
 $string['enrolled_students'] = 'Enrolled Students';
 $string['filter_cohort'] = 'Filter by cohort';
 $string['choose_cohort'] = 'Choose a cohort';
